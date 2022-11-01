@@ -1,33 +1,27 @@
-import { checkHighPriorityJobs, checklowhPriorityJobs } from "../dbConnection/getJobs.js";
 import { dbInput } from "../config.js";
 import { executeJobs } from "./executeJobs.js";
 import { updateDoneJob } from "../dbConnection/updateDoneJob.js";
+import { setPriority } from "./setPriority.js";
 
 const listener = (pool, client) => {
-  (function listen() {  
-    setTimeout(async () => {
-      // Set priority
-      let priority = -1;
-      const highPriorityJobs = await checkHighPriorityJobs(pool, client);
-      const lowPriorityJobs = await checklowhPriorityJobs(pool, client);
-      if(highPriorityJobs.length != 0){ priority = 0}
-      else if (highPriorityJobs.length == 0 && lowPriorityJobs.length != 0){priority = 1}
+  setTimeout(async () => {
+    // Prioritize jobs in the DB
+    const priority = await setPriority(pool, client);
 
-      // Execute depends on the priority
-      switch (priority){
-        case 0: 
-          await executeJobs(highPriorityJobs);
-          updateDoneJob(pool);
-          break;
-        case 1: 
-          console.log('in case 1 low priority');
-          break;
-      }
+    // Execute job depends on the priority
+    switch (priority) {
+      case 0:
+        console.log("in case 0 high priority");
+        await executeJobs(highPriorityJobs);
+        updateDoneJob(pool);
+        break;
+      case 1:
+        console.log("in case 1 low priority");
+        break;
+    }
 
-      // Keep listening
-      listen();
-    }, dbInput.loadTimeout);
-  })();
+    // Keep listening
+    listener(pool, client);
+  }, dbInput.loadTimeout);
 };
-
 export { listener };
