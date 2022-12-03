@@ -6,18 +6,19 @@ import { setPriority } from "./setPriority.js";
 const listener = (pool, client) => {
   setTimeout(async () => {
     // Prioritize jobs in the DB
-    const priority = await setPriority(pool, client);
-
-    // Execute job depends on the priority
-    switch (priority) {
-      case 0:
-        console.log("in case 0 high priority");
-        await executeJobs(highPriorityJobs);
-        updateDoneJob(pool);
-        break;
-      case 1:
-        console.log("in case 1 low priority");
-        break;
+    const abc = await setPriority(pool, client);
+    if (abc) {
+      // Execute job depends on the priority
+      switch (abc.priority) {
+        case 0:
+          console.log("in case 0 high priority");
+          await executeJobs(abc.highPriorityJobs, pool);
+          updateDoneJob(pool);
+          break;
+        case 1:
+          console.log("in case 1 low priority");
+          break;
+      }
     }
 
     // Keep listening
