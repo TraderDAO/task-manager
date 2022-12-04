@@ -33,7 +33,7 @@ const executeJobs = async (arrOfJobs, pool) => {
       let failCancelOrderIds = res.ids;
       for (let i = 0; i < failCancelOrderIds.length; i++) {
         let abc = failCancelOrderIds[i];
-        const updateOrder = `UPDATE dbt_traderdao.orderstable3 SET unfilledstatus = 'NEW' WHERE orderid = '${abc}'`;
+        const updateOrder = `UPDATE dbt_traderdao.orderstable SET unfilledstatus = 'NEW' WHERE orderid = '${abc}'`;
         await pool.query(updateOrder);
       }
     } else {
