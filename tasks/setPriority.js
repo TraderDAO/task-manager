@@ -5,12 +5,14 @@ import {
 
 const setPriority = async (pool, client) => {
   const highPriorityJobs = await checkHighPriorityJobs(pool, client);
+
   if (highPriorityJobs.length != 0) {
     return { priority: 0, highPriorityJobs };
   }
   if ((await checklowPriorityJobs(pool, client)).length != 0) {
     return { priority: 1 };
   }
+  return { priority: -99 };
 };
 
 export { setPriority };

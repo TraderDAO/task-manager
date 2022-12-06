@@ -1,5 +1,5 @@
 {
-  "name": "crypto-trading-platform-node",
+  "name": "crypto-trading-platform-task-manager",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,15 @@
   },
   "type": "module",
   "scripts": {
-    "serve": "nodemon index.js",
+    "serve": "nodemon index.js | npx pino-pretty",
+    "prod": "node index.js | npx pino-pretty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TraderDAO/crypto-trading-platform-node.git"
   },
-  "author": "",
+  "author": "traderPete",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/TraderDAO/crypto-trading-platform-node/issues"
@@ -28,6 +29,8 @@
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "pg": "^8.8.0",
-    "set-interval-async": "^3.0.2"
+    "set-interval-async": "^3.0.2",
+    "pino": "^8.4.2",
+    "pino-pretty": "^9.1.0"
   }
 }

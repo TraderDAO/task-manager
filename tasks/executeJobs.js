@@ -1,5 +1,6 @@
 import { createLimitOrder, cancelOrder } from "./orderControllor.js";
 import { doneJobs } from "../config.js";
+import logger from "../logger.js";
 
 const executeJobs = async (arrOfJobs, pool) => {
   // Jobs of NEW_ORDER
@@ -14,6 +15,8 @@ const executeJobs = async (arrOfJobs, pool) => {
     // Execute limit orders
     let doneLMOrderId = await executeNewLMOrder(newOrderArr);
     console.log(doneLMOrderId);
+    logger.error(`[Job we got] ${doneLMOrderId}`);
+
     doneJobs.push(...doneLMOrderId);
     // Execute market orders
   }
